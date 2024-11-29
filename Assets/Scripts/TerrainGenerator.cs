@@ -68,4 +68,64 @@ public class TerrainGenerator : MonoBehaviour
 
 		return total / maxValue;
 	}
+
+	private void GenerateTerrainMesh(float[,] heightMap)
+	{
+		mesh = new Mesh();
+		GetComponent<MeshFilter>().mesh = mesh;
+
+		vertices = new Vector3[(width + 1) * (height + 1)];
+		triangles = new int[width * height * 6];
+
+		int vertIndex = 0;
+		int triIndex = 0;
+
+		// Create vertices
+		for (int z = 0; z <= height; z++)
+		{
+			for (int x = 0; x <= width; x++)
+			{
+				float y = heightMap[x % width, z % height] * heightMultiplier;
+				vertices[vertIndex] = new Vector3(x, y, z);
+				vertIndex++;
+			}
+		}
+
+		// Reset before triangles to fix?
+		vertIndex = 0;
+
+		// Create triangles
+		for (int z = 0; z < height; z++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				int a = vertIndex;
+				int b = vertIndex + width + 1;
+				int c = vertIndex + 1;
+				int d = vertIndex + width + 2;
+
+				triangles[triIndex + 0] = a;
+				triangles[triIndex + 1] = b;
+				triangles[triIndex + 2] = c;
+
+				triangles[triIndex + 3] = c;
+				triangles[triIndex + 4] = b;
+				triangles[triIndex + 5] = d;
+
+				vertIndex++;
+				triIndex += 6;
+			}
+			vertIndex++;
+		}
+
+		UpdateMesh();
+	}
+
+	private void UpdateMesh()
+	{
+		mesh.Clear();
+		mesh.vertices = vertices;
+		mesh.triangles = triangles;
+		mesh.RecalculateNormals();
+	}
 }
