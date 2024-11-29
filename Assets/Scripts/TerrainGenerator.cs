@@ -23,6 +23,17 @@ public class TerrainGenerator : MonoBehaviour
 	private Vector3[] vertices;
 	private int[] triangles;
 
+	public Material terrainMaterial;
+
+	// Create terrain on play (gonna add regen button soon)
+	void Start()
+	{
+		float[,] heightMap = GenerateHeightMap();
+		GenerateTerrainMesh(heightMap);
+
+		GetComponent<MeshRenderer>().material = terrainMaterial;
+	}
+
 	private float[,] GenerateHeightMap()
 	{
 		// Create height map array
@@ -121,6 +132,7 @@ public class TerrainGenerator : MonoBehaviour
 		UpdateMesh();
 	}
 
+	// Update vertices and triangles after generation (It should fix lighting issue I think?)
 	private void UpdateMesh()
 	{
 		mesh.Clear();
