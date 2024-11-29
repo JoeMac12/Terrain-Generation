@@ -30,6 +30,7 @@ public class TerrainGenerator : MonoBehaviour
 		GenerateTerrain();
 	}
 
+	// Make terrain
 	public void GenerateTerrain()
 	{
 		float[,] heightMap = GenerateHeightMap();
@@ -39,6 +40,7 @@ public class TerrainGenerator : MonoBehaviour
 		GetComponent<MeshRenderer>().material = terrainMaterial;
 	}
 
+	// Clear mesh data and make new terrain
 	public void RegenerateTerrain()
 	{
 		mesh.Clear();
@@ -69,7 +71,7 @@ public class TerrainGenerator : MonoBehaviour
 		return heightMap;
 	}
 
-	// Still testing atm
+	// Generate perlin noise with octaves
 	private float GeneratePerlinNoise(float x, float y)
 	{
 		float total = 0f;
@@ -91,6 +93,7 @@ public class TerrainGenerator : MonoBehaviour
 		return total / maxValue;
 	}
 
+	// Generate terrain mesh from height map
 	private void GenerateTerrainMesh(float[,] heightMap)
 	{
 		mesh = new Mesh();
