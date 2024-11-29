@@ -25,13 +25,24 @@ public class TerrainGenerator : MonoBehaviour
 
 	public Material terrainMaterial;
 
-	// Create terrain on play (gonna add regen button soon)
 	void Start()
 	{
+		GenerateTerrain();
+	}
+
+	public void GenerateTerrain()
+	{
 		float[,] heightMap = GenerateHeightMap();
+
 		GenerateTerrainMesh(heightMap);
 
 		GetComponent<MeshRenderer>().material = terrainMaterial;
+	}
+
+	public void RegenerateTerrain()
+	{
+		mesh.Clear();
+		GenerateTerrain();
 	}
 
 	private float[,] GenerateHeightMap()
